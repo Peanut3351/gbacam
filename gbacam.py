@@ -1,21 +1,28 @@
 #!/usr/bin/python3
-import time
 from wand.image import Image
-from wand.display import display
 
 
 def modify(img):
     with img.clone() as i:
-        i.crop()
-    return i
+        i.crop(i.width // 2 - 128 // 2, i.height // 2 - 112 // 2, width=128, height=112)
+        print(i.depth)
+        i.resize(1024,896)
+        i.format = 'png'
+        print("Image resized.")
+        img_bin = i.make_blob()
+    return img_bin
 
 
 def load(imgloc):
     img = Image(filename=imgloc)
+    print("Image loaded.")
     return img
 
 
 def write(img):
+    with open('output.png', 'wb') as f:
+        f.write(img)
+    print("Image written.")
     return
 
 
