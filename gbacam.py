@@ -4,7 +4,7 @@ from wand.image import Image
 
 def modify(img):
     with img.clone() as i:
-        i.crop(i.width // 2 - 128 // 2, i.height // 2 - 112 // 2, width=128, height=112)
+        i.crop(i.width // 2 - min(int(i.width), int(i.height)) // 2, i.height // 2 - min(int(i.width), int(i.height)) // 2, width=min(int(i.width), int(i.height)), height=min(int(i.width), int(i.height)))
         print(i.depth)
         i.resize(1024,896)
         i.format = 'png'
