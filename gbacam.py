@@ -6,7 +6,8 @@ def modify(img):
     with img.clone() as i:
         i.crop(i.width // 2 - min(int(i.width), int(i.height)) // 2, i.height // 2 - min(int(i.width), int(i.height)) // 2, width=min(int(i.width), int(i.height)), height=min(int(i.width), int(i.height)))
         print(i.depth)
-        i.resize(1024,896)
+        i.sample(128,128)
+        i.sample(1024,1024)
         i.format = 'png'
         print("Image resized.")
         img_bin = i.make_blob()
