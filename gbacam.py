@@ -1,28 +1,29 @@
 #!/usr/bin/python3
-from wand.image import Image
+import PIL.Image as Image
+import png
+import numpy as np
 
 
 def modify(img):
-    with img.clone() as i:
-        i.crop(i.width // 2 - min(int(i.width), int(i.height)) // 2, i.height // 2 - min(int(i.width), int(i.height)) // 2, width=min(int(i.width), int(i.height)), height=min(int(i.width), int(i.height)))
-        print(i.depth)
-        i.sample(128,128)
-        i.sample(1024,1024)
-        i.format = 'png'
-        print("Image resized.")
-        img_bin = i.make_blob()
-    return img_bin
+    i = img.point(lambda x: int(x/17))
+    #i.mode = 'L;4'
+    width, height = img.size
+    i.crop((img.size[0] // 2 - min(width, height) // 2, img.size[1] // 2 - min(width, height) // 2, min(width, height), min(width, height)))
+    i.resize((128,128))
+    i.resize((1024,1024))
+    print("Image resized.")
+    return i
 
 
 def load(imgloc):
-    img = Image(filename=imgloc)
+    img = Image.open(imgloc)
     print("Image loaded.")
     return img
 
 
 def write(img):
-    with open('output.png', 'wb') as f:
-        f.write(img)
+    png.from_array(np.asarray(img, np.uint8), 'L;4').save('output.png')
+    #img.save('output.png')
     print("Image written.")
     return
 
@@ -30,10 +31,6 @@ def write(img):
 def getInput():
     imgloc = input("Please enter the location of your image: ")
     return imgloc
-
-
-def getHelp():
-    return
 
 
 def run():
